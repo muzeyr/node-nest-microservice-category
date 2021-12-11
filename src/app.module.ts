@@ -6,16 +6,7 @@ import { CategoryService } from './category/category.service';
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot({
-      type: 'mysql',
-      host: '85.95.237.78',
-      port: 3306,
-      username: 'monetapo_micro',
-      password: '_nv_#UX;Btab',
-      database: 'monetapo_micro',
-      autoLoadEntities: true,
-      synchronize: true,
-    }),
+    TypeOrmModule.forRoot(),
     CategoryModule],
   controllers: [],
   providers: [],
