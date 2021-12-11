@@ -5,16 +5,21 @@ import { Category } from './category.entity';
 
 @Injectable()
 export class CategoryService {
+    
 
     constructor(
         @InjectRepository(Category) private readonly categoryRepo: Repository<Category>) {
-        
+
     }
 
-    async find(): Promise<Category[]>{
+    async find(): Promise<Category[]> {
         return this.categoryRepo.find();
     }
-    async create(data):Promise<Category>{
+    async findOne(id: number):Promise<Category> {
+        return this.categoryRepo.findOne(id);
+    }
+
+    async create(data): Promise<Category> {
 
         return this.categoryRepo.save(data);
     }

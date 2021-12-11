@@ -1,5 +1,5 @@
 import { HttpService } from '@nestjs/axios';
-import { Body, Controller, Get, HttpServer, Post } from '@nestjs/common';
+import { Body, Controller, Get, HttpServer, Param, Post } from '@nestjs/common';
 import { Category } from './category.entity';
 import { CategoryService } from './category.service';
 import { interval, firstValueFrom } from 'rxjs';
@@ -7,36 +7,27 @@ import { interval, firstValueFrom } from 'rxjs';
 @Controller('category')
 export class CategoryController {
 
-    constructor(private categoryService: CategoryService,
-                private httpService: HttpService){
+    constructor(private categoryService: CategoryService){
 
     }
 
     @Get()
     async all() {
-
+        return this.categoryService.find();
+        /*
         let categories = await   this.categoryService.find();
-        categories.forEach(category =>{
-          
-        })
-        console.log(11);
         for (const category of categories) {
-        
             try {
-               
-                console.log('Wait response');
                 await (this.httpService.get(`http://localhost:8001/api/product/${category.id}/category`).subscribe(products=>{
                     category.products =  products.data;
                     console.log(category);
                 }));
-                console.log('end response');
             } catch (error) {
                 
             }
         }
-        console.log(2);
-
         return categories;
+        */
     }
 
     @Post()
@@ -47,6 +38,22 @@ export class CategoryController {
       
         this.categoryService.create({title,description});
     }
+     
+    @Post(':id/product')
+   async createProduct(@Param('id') id: number,
+                        @Param('name') name: string){
+       const category = await this.categoryService.findOne(id);
+       const products =  category.products;
+       console.log(123);
+       products.push({name});
+       
+       category.products = products;
+       await this.categoryService.create(category);
+       return category;
+
+     
+   }
+
 
 
 }
